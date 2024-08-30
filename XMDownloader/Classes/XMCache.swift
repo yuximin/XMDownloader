@@ -47,13 +47,17 @@ public class XMCache {
         }
     }
     
-    public func isExist(for url: URL) -> Bool {
-        let target = self.cacheFilePath(for: url)
+    public func isExist(for url: URLConvertible) -> Bool {
+        guard let validURL = try? url.asURL(),
+              let target = self.cacheFilePath(for: validURL) else { return false }
+        
         return FileManager.default.fileExists(atPath: target)
     }
     
-    public func cacheFilePath(for url: URL) -> String {
-        let lastPathComponent = url.lastPathComponent
+    public func cacheFilePath(for url: URLConvertible) -> String? {
+        guard let validURL = try? url.asURL() else { return nil }
+        
+        let lastPathComponent = validURL.lastPathComponent
         let targetFilePath = self.getTargetFilePath(for: lastPathComponent)
         return targetFilePath
     }

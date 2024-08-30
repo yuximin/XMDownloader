@@ -27,8 +27,8 @@ public class XMDownloader: NSObject {
             let validURL = try url.asURL()
             
             operationQueue.async {
-                if cache.isExist(for: validURL) {
-                    let targetFilePath = cache.cacheFilePath(for: validURL)
+                if cache.isExist(for: validURL),
+                   let targetFilePath = cache.cacheFilePath(for: validURL) {
                     completionHandler?(.success(targetFilePath))
                     return
                 }
